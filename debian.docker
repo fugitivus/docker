@@ -1,6 +1,4 @@
-#debian docker-container for general purpose:
-#build with docker build -f debian.docker -t fugitivus/debian:latest .
-
+#debian container for general purpose:
 FROM debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.de>
 
