@@ -1,0 +1,20 @@
+#hashcat container for teaching password security improvement:
+FROM fugitivus/debian:latest
+MAINTAINER fugitivus <benjamin.altenhoener@gmx.de>
+
+#environment-variables for non-interactive shell:
+ENV DEBIAN_FRONTEND noninteractive
+
+#install some packages to build hashcat:
+RUN apt-get update && apt-get install git make gcc -y\
+  && git clone https://github.com/hashcat/hashcat.git
+
+#build hashcat and do some cleanup:
+WORKDIR /hashcat
+RUN git submodule update --init\
+  && make && make install\
+  && apt-get remove --purge git make gcc -y\
+  && apt-get clean autoclean\
+  && apt-get autoremove -y\
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
+WORKDIR / && rm -r hashcat
