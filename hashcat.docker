@@ -17,4 +17,5 @@ RUN git submodule update --init\
   && apt-get clean autoclean\
   && apt-get autoremove -y\
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
-WORKDIR / && rm -r hashcat
+WORKDIR / 
+RUN rm -r hashcat
