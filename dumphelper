@@ -1,0 +1,108 @@
+#!/bin/sh
+
+#ansi-escape-colors:
+col_r='\033[1;31m'
+col_g='\033[1;32m'
+col_b='\033[1;34m'
+col_m='\033[1;35m'
+col_c='\033[1;36m'
+col_y='\033[1;33m'
+col_n='\033[0m'
+
+#Ausgabe der grundlegenden Linux-Shell kommandos:
+printout_linux () {
+	echo $col_r'Benutzerverwaltung:'
+	echo $col_c'adduser        '$col_g'Hinzufügen eines Benutzers'
+	echo $col_c'chsh           '$col_g'Änderung der Standard-Shell des Benutzers ("change shell")'
+	echo $col_c'deluser        '$col_g'Löschung eines Benutzers ("delete user")'
+	echo $col_c'groupadd       '$col_g'Hinzufügen einer Gruppe ("add group")'
+	echo $col_c'groupdel       '$col_g'Löschung einer Gruppe ("delete group")'
+	echo $col_c'groupmod       '$col_g'Bearbeitung einer Gruppe ("modify group")'
+	echo $col_c'id             '$col_g'Anzeige der Benutzer- und Gruppenkennung (ID)'
+	echo $col_c'newgrp         '$col_g'Änderung der Gruppe des aktuellen Benutzers ("new group")'
+	echo $col_c'usermod        '$col_g'Bearbeitung eines Benutzerkontos ("modify user")'
+	echo $col_c'chfn           '$col_g'erweiterte Benutzerinformationen\n'
+	echo $col_r'Netzwerk-konfiguration:'
+	echo $col_c'nslookup       '$col_g'Namensauflösung (DNS)'
+	echo $col_c'ifconfig       '$col_g'Anzeigen und Konfiguration von Netzwerkgeräten ("interface configuration")'
+	echo $col_c'iwconfig       '$col_g'Werkzeug für WLAN-Schnittstellen'
+	echo $col_c'netstat        '$col_g'Auflistung offener Ports und bestehender Netzwerkverbindungen ("network statistics")'
+	echo $col_c'ping           '$col_g'Prüfen der Erreichbarkeit anderer Rechner über ein Netzwerk'
+	echo $col_c'route          '$col_g'Anzeige und Änderung der Route (Routingtabelle)'
+	echo $col_c'traceroute     '$col_g'Routenverfolgung und Verbindungsanalyse\n'
+	echo $col_r'Dateiverwaltung:'
+	echo $col_c'cut            '$col_g'Spaltenweise Manipulation von Textdaten'
+	echo $col_c'dd             '$col_g'Bit-genaues Kopieren von Datenträgern'
+	echo $col_c'diff           '$col_g'Vergleich des Inhalts zweier Dateien (siehe auch patch für das Anwenden eines "Diffs")'
+	echo $col_c'find           '$col_g'Suche nach Dateien'
+	echo $col_c'grep           '$col_g'Durchsuchen von Dateien'
+	echo $col_c'locate         '$col_g'Suche nach Dateien mit Hilfe der Datenbank locatedb'
+	echo $col_c'lsof           '$col_g'Anzeige offener Dateien ("list open files")'
+	echo $col_c'md5sum         '$col_g'Ermittlung und Überprüfung der MD5-Prüfsumme von Dateien'
+	echo $col_c'mount/umount   '$col_g'Ein- und Aushängen eines Dateisystems'
+	echo $col_c'rename         '$col_g'Umbenennung von Dateien'
+	echo $col_c'rsync          '$col_g'Datensynchronisation'
+	echo $col_c'sort           '$col_g'Sortieren von Dateien nach vorgegebenen Kriterien'
+	echo $col_c'split          '$col_g'Aufteilung grosser Dateien in mehrere kleine'
+	echo $col_c'tree           '$col_g'Verzeichnishierarchie rekursiv als Baumstruktur anzeigen'
+	echo $col_c'updatedb       '$col_g'Aktualisierung der locate-Datenbank ("update database")\n'
+	echo $col_r'Rechteverwaltung:'
+	echo $col_c'chattr         '$col_g'Veränderung von Datei-Attributen und Rechten auf ext2- und ext3-Dateisystemen ("change attributes")'
+	echo $col_c'chgrp          '$col_g'Festlegung der Gruppenzugehörigkeit von Dateien ("change group")'
+	echo $col_c'chmod          '$col_g'Veränderung der Zugriffsrechte von Dateien ("change mode")'
+	echo $col_c'chown          '$col_g'Festlegung des Besitzers und der Gruppenzugehörigkeit von Dateien ("change ownership")\n'
+	echo $col_r'Systemüberwachung:'
+	echo $col_c'dmesg          '$col_g'Kernelmeldungen auf den Bildschirm ausgeben lassen; nützlich bei der Fehlersuche'
+	echo $col_c'crontab        '$col_g'Einstellung von zeitgesteuerten Skript-/Befehlsaufrufen'
+	echo $col_c'df             '$col_g'Ausgabe des Speicherplatzes aller eingehängten Laufwerke ("disk free")'
+	echo $col_c'du             '$col_g'Ausgabe des Speicherverbrauchs von Verzeichniessen ("disk usage")'
+	echo $col_c'free           '$col_g'Ausgabe der Arbeitsses Speicherauslastung'
+	echo $col_c'kill           '$col_g'Beendigung eines durch die Prozess-ID gekennzeichneten Prozessen'
+	echo $col_c'killall        '$col_g'Beendigung von nach dem Prozess namen gekennzeichneten Prozesses'
+	echo $col_c'pkill          '$col_g'Beendigung eines nach seinem Namen/durch einen regulären Ausdruck gekennzeichneten Prozesses'
+	echo $col_c'ps             '$col_g'Ausgabe aller laufenden Prozesse status)'
+	echo $col_c'pstree         '$col_g'Ausgabe aller laufenden Prozesse in Baumform'
+	echo $col_c'script         '$col_g'Terminalsitzungen mitschneiden (siehe auch scriptreplay)'
+	echo $col_c'stat           '$col_g'Zeitstempel von Dateien und Ordnern anzeigen'
+	echo $col_c'top            '$col_g'Ausgabe der Prozessorauslastung'
+	echo $col_c'uptime         '$col_g'Angabe der Laufzeit und Auslastung des Computers'
+	echo $col_c'vmstat         '$col_g'erste Analyse von Engpässen\n'
+	echo $col_r'Grundkommandos:'
+	echo $col_c'cat            '$col_g'Verknüpfung von Dateien ("concatenate")'
+	echo $col_c'cd             '$col_g'Wechsel des Arbeitsverzeichnisses ("change directory")'
+	echo $col_c'cp             '$col_g'Kopie von Dateien oder Verzeichnisses ("copy")'
+	echo $col_c'date           '$col_g'Anzeige von Datum und Zeit'
+	echo $col_c'echo           '$col_g'Anzeige eines Textes'
+	echo $col_c'exit           '$col_g'Ende der Sitzung'
+	echo $col_c'info           '$col_g'Anzeige einer Hilfe-Datei'
+	echo $col_c'ln             '$col_g'Link zu einer Datei oder einem Verzeichnis ("link")'
+	echo $col_c'ls             '$col_g'Auflistung von Dateien ("list")'
+	echo $col_y'man            '$col_y'Ausgabe der Handbuchseite zu einem Befehl oder einer Anwendung ("manual")'
+	echo $col_c'mkdir          '$col_g'Erzeugung von Verzeichniss ("make directory")'
+	echo $col_c'mmv            '$col_g'Multiple move (Datei-Mehrfachoperationen mit Hilfe von Wildcard-Mustern)'
+	echo $col_c'mv             '$col_g'Kopieren einer Datei und Löschen der Ursprungsdatei ("move")'
+	echo $col_c'pwd            '$col_g'Anzeige des aktuellen Verzeichniss ("print working directory")'
+	echo $col_c'rm             '$col_g'Löschen von Dateien und Verzeichnisse ("remove")'
+	echo $col_c'rmdir          '$col_g'Löschen eines leeren Verzeichnisses ("remove directory")'
+	echo $col_c'sudo           '$col_g'Root-Rechte für den Benutzer ("substitute user do")'
+	echo $col_c'touch          '$col_g'Erstellen von Dateien\n\n'$col_n
+}
+
+printout_hashcat () {
+	echo "Hashcat.."
+}
+
+if [ "$1" = "linux" ]
+	then
+		printout_linux
+
+	elif [ "$1" = "hashcat" ]
+		then
+		printout_hashcat
+	else
+		echo $col_r'\ndumphelper script usage = dumphelper <parameter>'
+		echo $col_g'\nParameter sind:'
+		echo $col_c'linux    -    '$col_g'Kleine Befehlsübesicht für die Linux-Shell.'
+		echo $col_c'hashcat  -    '$col_g'Kleine Befehlsübersicht für hashcat basics.\n'              
+fi
+echo $col_n
