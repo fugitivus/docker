@@ -1,5 +1,4 @@
 #apache2 container for general purpose and teaching students:
-
 FROM fugitivus/debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.net>
 
@@ -12,3 +11,6 @@ RUN apt-get update && apt-get upgrade -y\
  && apt-get clean autoclean\
  && apt-get autoremove -y\
  && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+#start apache2 as a service
+ENTRYPOINT ["/etc/init.d/apache2", "start"]
