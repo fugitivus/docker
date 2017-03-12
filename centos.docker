@@ -3,5 +3,5 @@ FROM centos:latest
 MAINTAINER fugitivus <benjamin.altenhoener@gmx.de>
 
 #install updates, some packages and do cleanup:
-RUN yum update -y && yum install net-tools nano -y\
+RUN yum update -y && yum install net-tools -y\
  && rm -rf /var/lib/{apt,dpkg,cache,log}/
