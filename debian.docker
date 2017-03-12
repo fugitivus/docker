@@ -1,6 +1,6 @@
 #debian container for general purpose:
 FROM debian:latest
-MAINTAINER fugitivus <benjamin.altenhoener@gmx.de>
+MAINTAINER fugitivus <fugitivus@gmx.net>
 
 #environment-variables for non-interactive shell:
 #ENV DEBIAN_FRONTEND noninteractive
