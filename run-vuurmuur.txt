@@ -1,0 +1,1 @@
+docker run -ti --privileged --cap-add=ALL --name vuurmuur -v /dev:/dev -v /lib/modules:/lib/modules fugitivus/vuurmuur:latest
