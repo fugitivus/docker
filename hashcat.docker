@@ -1,6 +1,6 @@
 #hashcat container for teaching password security improvement:
 FROM fugitivus/debian:latest
-MAINTAINER fugitivus <benjamin.altenhoener@gmx.de>
+MAINTAINER fugitivus <fugitivus@gmx.net>
 
 #environment-variables for non-interactive shell:
 ENV DEBIAN_FRONTEND noninteractive
