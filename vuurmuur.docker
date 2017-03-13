@@ -47,4 +47,4 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 #automatic startup for vuurmuur service:
-ENTRYPOINT ["/etc/init.d/vuurmuur", "start"]
+#ENTRYPOINT ["/etc/init.d/vuurmuur", "start"]
