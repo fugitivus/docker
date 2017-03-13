@@ -89,7 +89,13 @@ printout_linux () {
 }
 
 printout_hashcat () {
-	echo "Hashcat.."
+	echo $col_r"Hashcat-MD5-Bruteforce Beispiel"
+	echo $col_g"hashcat -n 2 -m 0 -a 3 --pw-min 9 hashfile.txt ?l?l?l?l?l?l?l?l?l?l"
+	echo $col_y"-n = 2 threads"
+	echo "-m 0 = md5"
+	echo "-pw-min 9 = minimal 9 characters"
+	echo "hashfile.txt = is txt file where the hash is located"
+	echo "?l?l?l?l?l?l?l?l?l?l = lowercase password"$col_n
 }
 
 if [ "$1" = "linux" ]
