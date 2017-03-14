@@ -37,7 +37,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
   && cd /Vuurmuur-0.8rc2\ 
   && dpkg -i vuurmuur-conf_0.8~rc2*.deb\
   && echo "VUURMUUR_START=1" > /etc/default/vuurmuur\
-  && sed -i -e 46c'MODULES_TO_LOAD="ip_tables iptable_filter iptable_mangle iptable_nat ; \
+  && sed -i -e 46c'MODULES_TO_LOAD="ip_tables iptable_filter iptable_mangle iptable_nat \
   ip_conntrack ipt_state ip_conntrack_ftp ip_nat_ftp"' /etc/init.d/vuurmuur\
 
 #do some cleanup:
