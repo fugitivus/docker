@@ -1,9 +1,12 @@
 #vuurmuur container for teaching students some basic firewall settings:
 #this container needs extendet host privileges to add kernel-modules into host
-#run -it --privileged --name=vuurmuur --cap-add=ALL -v /dev:/dev
-#-v /lib/modules:/lib/modules fugitivus/vuurmuur:latest
-#or:
-#docker run -it --name=vuurmuur -v /lib/modules:/lib/modules fugitivus/vuurmuur       
+#add some docker networks e.g and connect them to your container: 
+#docker network add WAN
+#docker network add LAN
+#docker network add DMZ
+#run -it --name=vuurmuur -v --net=WAN /dev:/dev -v /lib/modules:/lib/modules fugitivus/vuurmuur:latest
+#docker connect LAN vuurmuur
+#docker connect DMZ vuurmuur
 
 FROM fugitivus/debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.net>
@@ -47,4 +50,4 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 #automatic startup for vuurmuur service:
-#ENTRYPOINT ["/etc/init.d/vuurmuur", "start"]
+CMD ["/etc/init.d/vuurmuur", "start"]
