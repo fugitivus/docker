@@ -1,5 +1,5 @@
 # # hashcat Dockerfile # # https://github.com/ # # Pull base image. 
-FROM debian:latest 
+FROM fugitivus/debian:latest 
 MAINTAINER fugitivus <fugitivus@gmx.net> 
 ENV VERSION hashcat-3.10
 
