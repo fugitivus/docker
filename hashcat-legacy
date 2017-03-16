@@ -1,0 +1,14 @@
+# # hashcat Dockerfile # # https://github.com/ # # Pull base image. 
+FROM debian:latest 
+MAINTAINER fugitivus <fugitivus@gmx.net> 
+ENV VERSION hashcat-3.10
+
+RUN apt-get update && \
+    apt-get install -y wget p7zip
+#Install and configure hashcat 
+RUN mkdir hashcat && \
+    cd hashcat && \
+    wget http://hashcat.net/files/${VERSION}.7z && \
+    7zr e ${VERSION}.7z
+    
+RUN ln -s /hashcat/hashcat64.bin /usr/bin/hashcat
