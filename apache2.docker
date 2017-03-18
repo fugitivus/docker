@@ -13,4 +13,4 @@ RUN apt-get update && apt-get upgrade -y\
  && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 #start apache2 as a service
-ENTRYPOINT ["/etc/init.d/apache2", "start"]
+CMD ["/etc/init.d/apache2", "start"]
