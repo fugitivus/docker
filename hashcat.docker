@@ -3,7 +3,7 @@ FROM fugitivus/debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.net>
 
 #environment-variables for non-interactive shell:
-ENV DEBIAN_FRONTEND noninteractive
+#ENV DEBIAN_FRONTEND noninteractive
 
 #install some packages to build hashcat:
 RUN apt-get update && apt-get install\
