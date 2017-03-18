@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install\
   && make install\
   && cd /hashcat-legacy\
   && make linux\
-  && cp hashcat-cli64.bin /sbin/hashcat64\
-  && cp hashcat-cli32.bin /sbin/hashcat\
+  && cp hashcat-cli64.bin /sbin/hashcat\
+  && cp hashcat-cli32.bin /sbin/hashcat32\
 
 #do some cleanup:
   && apt-get remove --purge -y git make gcc wget\
