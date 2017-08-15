@@ -1,12 +1,10 @@
-#vuurmuur container for teaching students some basic firewall settings:
-#this container needs extendet host privileges to add kernel-modules into host
-#add some docker networks e.g and connect them to your container: 
-#docker network add WAN
-#docker network add LAN
-#docker network add DMZ
-#run -it --name=vuurmuur -v --net=WAN /dev:/dev -v /lib/modules:/lib/modules fugitivus/vuurmuur:latest
-#docker connect LAN vuurmuur
-#docker connect DMZ vuurmuur
+# vuurmuur container for teaching students some basic firewall settings:
+# this container needs extendet host privileges to add kernel-modules into host
+# if you want it to use for your entire host-system start it e.g.:
+# docker run -it --privileged --name=vuurmuur --cap-add=ALL -v /dev:/dev 
+# -v /lib/modules:/lib/modules fugitivus/vuurmuur:latest bash
+# or a more secure way to start this container only loading kernel modules:
+# docker run -it --name=vuurmuur -v /lib/modules:/lib/modules fugitivus/vuurmuur bash
 
 FROM fugitivus/debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.net>
@@ -19,35 +17,30 @@ MAINTAINER fugitivus <fugitivus@gmx.net>
 RUN apt-get update && apt-get -y --no-install-recommends install \
   wget libtool debhelper automake autoconf gcc g++ libc6-dev iptables\
   libncurses5-dev conntrack libnfnetlink-dev libnetfilter-log-dev kmod\
+  ca-certificates unzip\
 
 #download,build and install vuurmuur:
-  && wget ftp://ftp.vuurmuur.org/releases/0.8rc2/Vuurmuur-0.8rc2.tar.gz\
-  && tar xfv Vuurmuur-0.8rc2.tar.gz\
-  && cd /Vuurmuur-0.8rc2\
-  && tar xfv libvuurmuur-0.8rc2.tar.gz\
-  && cd /Vuurmuur-0.8rc2/libvuurmuur-0.8rc2\
+  && wget https://github.com/inliniac/vuurmuur/archive/master.zip\
+  && unzip master.zip\
+  && cd vuurmuur-master\
+  && ./autogen.sh\
+  && ./configure\
   && dpkg-buildpackage -d\
-  && cd /Vuurmuur-0.8rc2\ 
-  && dpkg -i libvuurmuur_0.8~rc2-1*.deb\
-  && tar xfv vuurmuur-0.8rc2.tar.gz\
-  && cd /Vuurmuur-0.8rc2/vuurmuur-0.8rc2\
-  && dpkg-buildpackage -d\
-  && cd /Vuurmuur-0.8rc2\ 
-  && dpkg -i vuurmuur_0.8~rc2-1*.deb\
-  && tar xfv vuurmuur_conf-0.8rc2.tar.gz\
-  && cd /Vuurmuur-0.8rc2/vuurmuur_conf-0.8rc2\
-  && dpkg-buildpackage -d\
-  && cd /Vuurmuur-0.8rc2\ 
-  && dpkg -i vuurmuur-conf_0.8~rc2*.deb\
+  && dpkg -i /vuurmuur_0.8~rc2-1_amd64.deb\
+  && rm -r /vuurmuur*\
+  && ln -s /etc/vuurmuur/ /usr/local/etc/vuurmuur\
+  && chmod -R 600 /etc/vuurmuur\
   && echo "VUURMUUR_START=1" > /etc/default/vuurmuur\
-  && sed -i -e 46c'MODULES_TO_LOAD="ip_tables iptable_filter iptable_mangle iptable_nat \
+  && sed -i -e 46c'MODULES_TO_LOAD="ip_tables iptable_filter iptable_mangle iptable_nat \ 
   ip_conntrack ipt_state ip_conntrack_ftp ip_nat_ftp"' /etc/init.d/vuurmuur\
 
 #do some cleanup:
-  && apt-get remove --purge wget libtool debhelper automake autoconf gcc g++ libc6-dev libncurses5-dev -y\
+  && apt-get remove --purge wget libtool debhelper automake autoconf\
+  && gcc g++ libc6-dev libncurses5-dev ca-certificates unzip -y\ 
   && apt-get clean autoclean\
-  && apt-get autoremove -y\  
+  && apt-get autoremove -y\
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 #automatic startup for vuurmuur service:
-CMD ["/etc/init.d/vuurmuur", "start"]
+#ENTRYPOINT ["/etc/init.d/vuurmuur", "start"]
+
