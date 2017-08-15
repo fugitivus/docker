@@ -1,5 +1,5 @@
 #apache2 container for general purpose and teaching students:
-FROM fugitivus/debian:latest
+FROM fugitivus/debian:jessie
 MAINTAINER fugitivus <fugitivus@gmx.net>
 
 #environment-variables for non-interactive shell:
