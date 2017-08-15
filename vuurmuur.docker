@@ -36,11 +36,10 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 
 #do some cleanup:
   && apt-get remove --purge wget libtool debhelper automake autoconf\
-  && gcc g++ libc6-dev libncurses5-dev ca-certificates unzip -y\ 
+  gcc g++ libc6-dev libncurses5-dev ca-certificates unzip -y\ 
   && apt-get clean autoclean\
   && apt-get autoremove -y\
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 #automatic startup for vuurmuur service:
 #ENTRYPOINT ["/etc/init.d/vuurmuur", "start"]
-
