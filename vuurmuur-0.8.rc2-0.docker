@@ -1,0 +1,51 @@
+#vuurmuur container for teaching students some basic firewall settings:
+#this container needs extendet host privileges to add kernel-modules into host
+#run -it --privileged --name=vuurmuur --cap-add=ALL -v /dev:/dev 
+#-v /lib/modules:/lib/modules fugitivus/vuurmuur:latest
+#or:
+#docker run -it --name=vuurmuur -v /lib/modules:/lib/modules fugitivus/vuurmuur
+
+#FROM fugitivus/debian:latest
+FROM debian:latest
+MAINTAINER fugitivus <fugitivus@gmx.net>
+
+#environment-variables for non-interactive shell:
+#ENV DEBIAN_FRONTEND noninteractive
+#ENV DEBCONF_NOWARNINGS yes
+
+#install some packages to build vuurmuur:
+RUN apt-get update && apt-get -y --no-install-recommends install \
+  wget libtool debhelper automake autoconf gcc g++ libc6-dev iptables\
+  libncurses5-dev conntrack libnfnetlink-dev libnetfilter-log-dev kmod\
+
+#download,build and install vuurmuur:
+  && wget ftp://ftp.vuurmuur.org/releases/0.8rc2/Vuurmuur-0.8rc2.tar.gz\
+  && tar xfv Vuurmuur-0.8rc2.tar.gz
+  RUN cd /Vuurmuur-0.8rc2\
+  && tar xfv libvuurmuur-0.8rc2.tar.gz\
+  && cd /Vuurmuur-0.8rc2/libvuurmuur-0.8rc2\
+  && dpkg-buildpackage -d
+  RUN cd /Vuurmuur-0.8rc2\
+  && dpkg -i libvuurmuur_0.8~rc2-1*.deb\
+  && tar xfv vuurmuur-0.8rc2.tar.gz
+  RUN cd /Vuurmuur-0.8rc2/vuurmuur-0.8rc2\
+  && dpkg-buildpackage -d
+  RUN cd /Vuurmuur-0.8rc2\
+  && dpkg -i vuurmuur_0.8~rc2-1*.deb\
+  && tar xfv vuurmuur_conf-0.8rc2.tar.gz
+  RUN cd /Vuurmuur-0.8rc2/vuurmuur_conf-0.8rc2\
+  && dpkg-buildpackage -d
+  RUN cd /Vuurmuur-0.8rc2\
+  && dpkg -i vuurmuur-conf_0.8~rc2*.deb\
+  && echo "VUURMUUR_START=1" > /etc/default/vuurmuur\
+  && sed -i -e 46c'MODULES_TO_LOAD="ip_tables iptable_filter iptable_mangle iptable_nat ; \ 
+  ip_conntrack ipt_state ip_conntrack_ftp ip_nat_ftp"' /etc/init.d/vuurmuur\
+
+#do some cleanup:
+  && apt-get remove --purge wget libtool debhelper automake autoconf gcc g++ libc6-dev libncurses5-dev -y\ 
+  && apt-get clean autoclean\
+  && apt-get autoremove -y\
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+#automatic startup for vuurmuur service:
+#ENTRYPOINT ["/etc/init.d/vuurmuur", "start"]
