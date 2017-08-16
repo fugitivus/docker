@@ -1,8 +1,8 @@
 # vuurmuur container for teaching students some basic firewall settings:
 # this container needs extendet host privileges to add kernel-modules into host
-# if you want it to use for your entire host-system start it e.g.:
-# docker run -it --privileged --name=vuurmuur --cap-add=ALL -v /dev:/dev 
-# -v /lib/modules:/lib/modules fugitivus/vuurmuur:latest bash
+# run with extendet privileges eg:
+# docker run -it --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /lib/modules:/lib/modules 
+#     --name=vuurmuur fugitivus/vuurmuur bash
 
 FROM fugitivus/debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.net>
