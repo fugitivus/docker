@@ -3,8 +3,6 @@
 # if you want it to use for your entire host-system start it e.g.:
 # docker run -it --privileged --name=vuurmuur --cap-add=ALL -v /dev:/dev 
 # -v /lib/modules:/lib/modules fugitivus/vuurmuur:latest bash
-# or a more secure way to start this container only loading kernel modules:
-# docker run -it --name=vuurmuur -v /lib/modules:/lib/modules fugitivus/vuurmuur bash
 
 FROM fugitivus/debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.net>
@@ -31,7 +29,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
   && ln -s /etc/vuurmuur/ /usr/local/etc/vuurmuur\
   && chmod -R 600 /etc/vuurmuur\
   && echo "VUURMUUR_START=1" > /etc/default/vuurmuur\
-  && sed -i -e 46c'MODULES_TO_LOAD="ip_tables iptable_filter iptable_mangle iptable_nat \ 
+  && sed -i -e 46c'MODULES_TO_LOAD="ip_tables iptable_filter iptable_mangle iptable_nat\ 
   ip_conntrack ipt_state ip_conntrack_ftp ip_nat_ftp"' /etc/init.d/vuurmuur\
 
 #do some cleanup:
