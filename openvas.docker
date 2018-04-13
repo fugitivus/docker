@@ -1,0 +1,37 @@
+# vuurmuur container for teaching students some basic firewall settings:
+# this container needs extendet host privileges to add kernel-modules
+# run with extendet privileges eg:
+# docker run -it --cap-add=NET_ADMIN --cap-add=SYS_MODULE
+# -v /lib/modules:/lib/modules --name=vuurmuur fugitivus/vuurmuur bash
+
+FROM fugitivus/ubuntu:latest
+MAINTAINER fugitivus <fugitivus@gmx.net>
+
+#environment-variables for non-interactive shell:
+#ENV DEBIAN_FRONTEND noninteractive
+#ENV DEBCONF_NOWARNINGS yes
+
+#install some packages to build vuurmuur:
+RUN apt-get update && apt-get -y --no-install-recommends install \
+  wget libtool debhelper automake autoconf gcc g++ redis-server \
+  nmap sqlite3 nsis rpm alien software-properties-common
+
+RUN add-apt-repository ppa:mrazavi/openvas
+RUN apt-get update && apt-get -y install openvas9
+RUN greenbone-nvt-sync
+RUN greenbone-scapdata-sync
+RUN greenbone-certdata-sync
+RUN service openvas-scanner restart
+RUN service openvas-manager restart
+RUN openvasmd --rebuild --progress
+
+RUN wget https://svn.wald.intevation.org/svn/openvas/trunk/tools/openvas-check-setup --no-check-certificate
+RUN chmod +x openvas-check-setup
+RUN ./openvas-check-setup  --v9
+
+##do some cleanup:
+#  && apt-get remove --purge wget libtool debhelper automake autoconf\
+#  gcc g++ libc6-dev libncurses5-dev ca-certificates unzip -y\
+#  && apt-get clean autoclean\
+#  && apt-get autoremove -y\
+#  && rm -rf /var/lib/{apt,dpkg,cache,log}/
