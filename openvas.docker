@@ -19,7 +19,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 RUN add-apt-repository ppa:mrazavi/openvas
 RUN apt-get update && apt-get -y install openvas9
 RUN greenbone-nvt-sync
-RUN greenbone-scapdata-sync
+RUN greenbone-scapdata-sync > /dev/null
 RUN greenbone-certdata-sync
 RUN service openvas-scanner restart
 RUN service openvas-manager restart
