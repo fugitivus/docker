@@ -9,6 +9,6 @@ MAINTAINER fugitivus <fugitivus@gmx.net>
 
 #install updates, some packages and do cleanup:
 RUN apt-get update && apt-get upgrade -y\
-&& apt-get tor torsocks -y\
+&& apt-get install tor torsocks -y\
 && go get github.com/s-rah/onionscan\
 && go install github.com/s-rah/onionscan
