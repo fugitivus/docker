@@ -1,7 +1,7 @@
 #onionscan container for general purpose:
 #info @ https://github.com/s-rah/onionscan
 
-FROM golang:1.7
+FROM golang:1.11
 MAINTAINER fugitivus <fugitivus@gmx.net>
 
 #environment-variables for non-interactive shell:
