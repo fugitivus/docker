@@ -1,0 +1,25 @@
+#icinga2 docker-container for general purpose:
+#build with docker build -f icinga2.docker -t fugitivus/icinga2:latest .
+#web-interface: http://127.0.0.1/icinga2-classicui/
+#start with docker run -d fugitivus/icinga2
+
+FROM ubuntu:latest
+MAINTAINER fugitivus <fugitivus@gmx.de>
+
+#environment-variables for non-interactive shell:
+ENV DEBIAN_FRONTEND noninteractive
+
+#install updates, some packages and do cleanup:
+RUN apt-get update && apt-get upgrade -y\
+ && apt-get install apt-utils -y\
+ && apt-get install net-tools htop bmon joe aptitude wget gnupg2 apache2 -y\
+ && wget -O - https://packages.icinga.com/icinga.key | apt-key add -\
+ && echo 'deb https://packages.icinga.com/ubuntu icinga-bionic main' > /etc/apt/sources.list.d/icinga-main-bionic.list\
+ && apt-get update\
+ && apt-get install icinga2 icinga2-classicui -y\
+ && htpasswd -b /etc/icinga2-classicui/htpasswd.users icingaadmin password\
+ && apt-get clean autoclean\
+ && apt-get autoremove -y\
+ && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+ENTRYPOINT service apache2 start && service icinga2 start && /bin/bash
