@@ -2,8 +2,9 @@
 #build with docker build -f icinga2.docker -t fugitivus/icinga2:latest .
 #web-interface: http://127.0.0.1/icinga2-classicui/
 #start with docker run -d fugitivus/icinga2
+#default credes are: icingaadmin icinga
 
-FROM ubuntu:latest
+FROM fugitivus/ubuntu:latest
 MAINTAINER fugitivus <fugitivus@gmx.de>
 
 #environment-variables for non-interactive shell:
@@ -17,7 +18,7 @@ RUN apt-get update && apt-get upgrade -y\
  && echo 'deb https://packages.icinga.com/ubuntu icinga-bionic main' > /etc/apt/sources.list.d/icinga-main-bionic.list\
  && apt-get update\
  && apt-get install icinga2 icinga2-classicui -y\
- && htpasswd -b /etc/icinga2-classicui/htpasswd.users icingaadmin password\
+ && htpasswd -b /etc/icinga2-classicui/htpasswd.users icingaadmin icinga\
  && apt-get clean autoclean\
  && apt-get autoremove -y\
  && rm -rf /var/lib/{apt,dpkg,cache,log}/
