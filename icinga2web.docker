@@ -1,0 +1,102 @@
+# icinga2web docker-container for general purpose:
+# based on: https://www.thomas-krenn.com/de/wiki/Icinga_Web_2_mit_Icinga_2_verwenden
+# and http://brunner-it.de/2016/08/04/installationsanleitung-icinga-director
+# and https://dokuwiki.tachtler.net/doku.php?id=tachtler:icinga2_-_director
+# build with docker build -f icinga2web.docker -t fugitivus/icinga2web:latest .
+# setup web-interface: http://127.0.0.1/icingaweb2/setup/
+# start with docker run -d fugitivus/icinga2web
+# default cred's are defined under pre-selections
+
+FROM fugitivus/ubuntu:latest
+MAINTAINER fugitivus <fugitivus@gmx.de>
+
+# pre-selections/settings:
+ENV MYSQL_USER 'icingaadmin'
+ENV MYSQL_PASS 'icinga'
+ENV API_USER 'icingaadmin'
+ENV API_PASS 'icinga'
+ENV IDO_USER 'icingaadmin'
+ENV IDO_PASS 'icinga'
+
+# environment-variables for non-interactive shell:
+ENV DEBIAN_FRONTEND noninteractive
+
+#install updates and required packages:
+RUN apt-get update && apt-get upgrade -y\
+ && apt-get install apt-utils git -y\
+ && apt-get install net-tools htop bmon joe aptitude wget gnupg2 apache2 -y\
+ && apt-get install mysql-server mysql-client php7.2 libapache2-mod-php7.2 -y\
+
+# add icinga2 repository and install icinga2:
+ && wget -O - http://packages.icinga.org/icinga.key | apt-key add -\
+ && echo 'deb http://packages.icinga.org/ubuntu icinga-bionic main'\
+    > /etc/apt/sources.list.d/icinga-main-bionic.list\
+ && apt-get update\
+ && apt-get install icinga2 icinga2-ido-mysql -y
+
+# enable icinga2 features and install icinga2web:
+RUN icinga2 feature enable ido-mysql
+RUN icinga2 feature enable command
+RUN addgroup --system icingacmd
+RUN usermod -a -G icingacmd www-data
+RUN icinga2 feature list
+RUN addgroup --system icingacmd
+RUN usermod -a -G icingacmd www-data
+RUN id www-data
+RUN aptitude install icingaweb2 -y
+RUN icinga2 api setup
+
+#get icinga-director module and import databas schema:
+RUN git clone https://github.com/Icinga/icingaweb2-module-director.git
+RUN mv /icingaweb2-module-director/ /usr/share/icingaweb2/modules/director
+
+# Create Databases:
+RUN service mysql start\
+ && mysql -u root -e "CREATE DATABASE icinga2;" --password=$MYSQL_PASS\
+ && mysql -u root -e "CREATE DATABASE icinga2web;" --password=$MYSQL_PASS\
+ && mysql -u root -e "CREATE DATABASE director;" --password=$MYSQL_PASS\
+
+# Configure database permissions:
+ && mysql -u root -e "GRANT ALL PRIVILEGES ON icinga2.* TO 'icingaadmin'@'localhost' IDENTIFIED BY 'icinga';" --password=$MYSQL_PASS\
+ && mysql -u root -e "GRANT ALL PRIVILEGES ON director.* TO 'icingaadmin'@'localhost' IDENTIFIED BY 'icinga' WITH GRANT OPTION;" --password=$MYSQL_PASS\
+ && mysql -u root -e "GRANT ALL PRIVILEGES ON icinga2web.* TO 'icingaadmin'@'localhost' IDENTIFIED BY 'icinga';" --password=$MYSQL_PASS\
+ && mysql -u root -f icinga2 < /usr/share/icinga2-ido-mysql/schema/mysql.sql --password=$MYSQL_PASS\
+ && mysql -u root -f director < /usr/share/icingaweb2/modules/director/schema/mysql.sql  --password=$MYSQL_PASS
+
+
+# change configuration files:
+RUN sed -i 's/;date.timezone =/date.timezone = "Europe\/Berlin"/g' /etc/php/7.2/apache2/php.ini
+
+#RUN sed -i 's/.*root.*/object ApiUser "icingaadmin" {/g' /etc/icinga2/features-enabled/ido-mysql.conf
+RUN sed -i 's/.*user.*/  user = "icingaadmin" /g' /etc/icinga2/features-enabled/ido-mysql.conf
+RUN sed -i 's/.*password.*/  password = "icinga"/g' /etc/icinga2/features-enabled/ido-mysql.conf
+RUN sed -i 's/.*root.*/object ApiUser "icingaadmin" {/g' /etc/icinga2/conf.d/api-users.conf
+RUN sed -i 's/.*password.*/  password = "icinga"/g' /etc/icinga2/conf.d/api-users.conf
+
+
+RUN icingacli setup config directory --group icingaweb2;
+RUN icingacli setup token create;
+
+
+
+
+RUN apt-get clean autoclean\
+ && apt-get autoremove -y\
+ && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+#pre-selections:
+ENV MYSQL_USER ''
+ENV MYSQL_PASS ''
+
+
+ENTRYPOINT service mysql start\
+ && service apache2 start\
+ && service icinga2 start\
+ && /bin/bash
+
+
+#director:
+#change api user cat /etc/icinga2/conf.d/api-users.conf
+
+#wmi:
+#wget time make gcc autoconf nagios-plugins-perl perl-Config-IniFiles perl-DateTime perl-Scalar-List-Utils perl-Number-Format
