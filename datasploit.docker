@@ -1,0 +1,16 @@
+#datasploit container for teaching students some basic OSINT features:
+#https://www.exploit-db.com/docs/english/45543-detecting-behavioral-personas-with-osint-and-datasploit.pdf
+
+FROM fugitivus/debian:latest
+MAINTAINER fugitivus <fugitivus@gmx.net>
+
+#environment-variables for non-interactive shell:
+#ENV DEBIAN_FRONTEND noninteractive
+
+#install updates, some packages and do cleanup:
+RUN apt-get update && apt-get upgrade -y\
+&& apt-get install python git python-pip make gcc -y\
+&& git clone https://github.com/datasploit/datasploit /etc/datasploit\
+&& cd /etc/datasploit/\
+&& pip install -r requirements.txt\
+&& mv config_sample.py config.py
