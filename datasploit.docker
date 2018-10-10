@@ -13,4 +13,5 @@ RUN apt-get update && apt-get upgrade -y\
 && git clone https://github.com/datasploit/datasploit /etc/datasploit\
 && cd /etc/datasploit/\
 && pip install -r requirements.txt\
+&& pip install datasploit\
 && mv config_sample.py config.py
