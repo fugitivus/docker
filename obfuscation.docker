@@ -1,5 +1,5 @@
 #obfuscation docker-container for for teaching students
-#some obfuscations techic´s for Windows cmd.exe and powershell.exe:
+#some obfuscation techniques for Windows cmd.exe and powershell.exe:
 #build with docker build -f obfuscation.docker -t fugitivus/obfuscation:latest .
 
 FROM fugitivus/ubuntu:xenial
