@@ -1,0 +1,23 @@
+#ubuntu docker-container with x11 support for general purpose:
+#build with:
+#docker build -f x11.docker -t fugitivus/x11:latest .
+#run with:
+#docker run -ti -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix fugitivus/x11:latest
+
+FROM fugitivus/ubuntu:xenial
+
+MAINTAINER fugitivus <fugitivus@gmx.de>
+
+#environment-variables for non-interactive shell:
+#ENV DEBIAN_FRONTEND noninteractive
+
+#install updates, some packages and do cleanup:
+RUN apt-get update && apt-get upgrade -y\
+ && apt-get install apt-utils firefox -y\
+ && apt-get install net-tools htop bmon joe aptitude -y\
+ && apt-get clean autoclean\
+ && apt-get autoremove -y\
+ && rm -rf /var/lib/{apt,dpkg,cache,log}/
+ #CMD /usr/bin/firefox
+
+#https://github.com/frkolyan/NetworkMiner.git
