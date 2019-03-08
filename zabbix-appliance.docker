@@ -10,7 +10,8 @@ MAINTAINER fugitivus <fugitivus@gmx.de>
 #ENV DEBIAN_FRONTEND noninteractive
 
 #install updates, some packages and do cleanup:
-RUN apt-get update && apt-get upgrade -y\
+#RUN apt-get update && apt-get upgrade -y\
+RUN apt-get update\
  && apt-get install apt-utils inetutils-ping fping joe net-tools -y\
  && chown root:zabbix /usr/bin/fping\
  && chmod 4710 /usr/bin/fping\
@@ -18,4 +19,5 @@ RUN apt-get update && apt-get upgrade -y\
  && apt-get autoremove -y\
  && rm -rf /var/lib/{apt,dpkg,cache,log}/
  
- ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
+ #ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
+ ENTRYPOINT ["docker-entrypoint.sh"]
