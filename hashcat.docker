@@ -7,7 +7,7 @@ MAINTAINER fugitivus <fugitivus@gmx.net>
 
 #install some packages to build hashcat:
 RUN apt-get update && apt-get install\
-  m4 lzip git make wget gcc libgmp3-dev libc6-dev-i386 -y\
+  m4 lzip git make wget gcc joe libgmp3-dev libc6-dev-i386 -y\
   && git clone https://github.com/hashcat/hashcat-legacy.git\
 
 #build hashcat and gmp:
