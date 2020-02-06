@@ -2,6 +2,7 @@
 FROM debian:latest
 MAINTAINER fugitivus <fugitivus@gmx.net>
 
+
 #environment-variables for non-interactive shell:
 #ENV DEBIAN_FRONTEND noninteractive
 
