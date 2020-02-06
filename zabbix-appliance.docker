@@ -11,7 +11,7 @@ MAINTAINER fugitivus <fugitivus@gmx.de>
 #install updates, some packages and do cleanup:
 RUN apt-get update && apt-get upgrade -y\
 #RUN apt-get update\
- && apt-get install apt-utils inetutils-ping fping joe net-tools -y\
+ && apt-get install apt-utils inetutils-ping fping net-tools -y\
  && chown root:zabbix /usr/bin/fping\
  && chmod 4710 /usr/bin/fping\
  && apt-get clean autoclean\
